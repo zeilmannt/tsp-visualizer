@@ -8,10 +8,7 @@ import java.util.List;
 public class Ui extends JFrame {
     private List<Node> cities = new ArrayList<>();
     private List<Node> path = new ArrayList<>();
-    private final String[] algorithms = {
-            "Nearest Neighbor",
-            "Ant Colony Optimization"
-    };
+
 
     public Ui(){
         setTitle("Traveling Salesman Problem");
@@ -19,18 +16,35 @@ public class Ui extends JFrame {
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
+        // All JavaSwing objects
         JPanel buttonPanel = new JPanel();
         JPanel infoPanel = new JPanel();
         JButton addRandomCityButton = new JButton("Add Random Cities");
         JButton addCityButton = new JButton("Add City");
         JButton solveButton = new JButton("Solve TSP");
         JButton clearCitiesButton = new JButton("Clear cities");
+
+        Algorithm[] algorithms = {
+                Algorithm.NEAREST_NEIGHBOR,
+                Algorithm.ANT_COLONY
+        };
+
         JComboBox solveOptions = new JComboBox(algorithms);
+
+        // Pop up slider for number of city inputs
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, 1, 10, 5); // min=1, max=10, initial=5
+        slider.setMajorTickSpacing(1);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setSnapToTicks(true);
+
         JFrame infoTestFrame = new JFrame("Test");
 
+        // Set button to add one city and to clear all cities disabled
         addCityButton.setEnabled(false);
         clearCitiesButton.setEnabled(false);
 
+        // Add objects to buttons panel
         buttonPanel.add(addRandomCityButton);
         buttonPanel.add(addCityButton);
         buttonPanel.add(solveButton);
@@ -42,16 +56,33 @@ public class Ui extends JFrame {
         add(buttonPanel, BorderLayout.SOUTH);
         add(infoPanel, BorderLayout.EAST);
 
+        // Action listeners for buttons
         addRandomCityButton.addActionListener(e -> {
             cities.clear();
-            Random rand = new Random();
-            for (int i = 0; i < 10; i++) {
-                cities.add(new Node("City" + i, rand.nextInt(700), rand.nextInt(500)));
+
+            // Open pop up for number of random cities as input
+            int result = JOptionPane.showConfirmDialog(
+                    null,
+                    slider,
+                    "Select number of cities",
+                    JOptionPane.OK_CANCEL_OPTION,
+                    JOptionPane.PLAIN_MESSAGE
+            );
+
+            // Add new city to frame
+            if (result == JOptionPane.OK_OPTION) {
+                int value = slider.getValue();
+                Random rand = new Random();
+                for (int i = 0; i < value; i++) {
+                    cities.add(new Node("City" + i, rand.nextInt(700), rand.nextInt(500)));
+                }
+                LoggerService.logMessage(LogType.INFO, value + " random cities were added to panel");
+                addCityButton.setEnabled(true);
+                clearCitiesButton.setEnabled(true);
+                repaint();
+            } else {
+                LoggerService.logMessage(LogType.INFO, "User cancelled adding cities");
             }
-            System.out.println("-- 10 random cities were added to panel");
-            addCityButton.setEnabled(true);
-            clearCitiesButton.setEnabled(true);
-            repaint();
         });
 
         solveButton.addActionListener(e -> {
@@ -70,7 +101,7 @@ public class Ui extends JFrame {
 
         clearCitiesButton.addActionListener(e -> {
             if (!cities.isEmpty()) {
-                System.out.println("-- " + cities.size() + " cities were removed");
+                LoggerService.logMessage(LogType.INFO, cities.size() + " cities were removed");
                 cities.clear();
                 addCityButton.setEnabled(false);
                 clearCitiesButton.setEnabled(false);

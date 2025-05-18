@@ -27,7 +27,7 @@
                 <configuration>
                     <archive>
                         <manifest>
-                            <mainClass>Ui</mainClass>
+                            <mainClass>de.project.graphProblems.Ui</mainClass>
                         </manifest>
                     </archive>
                 </configuration>

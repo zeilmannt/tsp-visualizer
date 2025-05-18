@@ -8,6 +8,10 @@ import java.util.List;
 public class Ui extends JFrame {
     private List<Node> cities = new ArrayList<>();
     private List<Node> path = new ArrayList<>();
+    private final String[] algorithms = {
+            "Nearest Neighbor",
+            "Ant Colony Optimization"
+    };
 
     public Ui(){
         setTitle("Traveling Salesman Problem");
@@ -16,19 +20,37 @@ public class Ui extends JFrame {
         setLocationRelativeTo(null);
 
         JPanel buttonPanel = new JPanel();
-        JButton addCityButton = new JButton("Add Random Cities");
+        JPanel infoPanel = new JPanel();
+        JButton addRandomCityButton = new JButton("Add Random Cities");
+        JButton addCityButton = new JButton("Add City");
         JButton solveButton = new JButton("Solve TSP");
+        JButton clearCitiesButton = new JButton("Clear cities");
+        JComboBox solveOptions = new JComboBox(algorithms);
+        JFrame infoTestFrame = new JFrame("Test");
 
+        addCityButton.setEnabled(false);
+        clearCitiesButton.setEnabled(false);
+
+        buttonPanel.add(addRandomCityButton);
         buttonPanel.add(addCityButton);
         buttonPanel.add(solveButton);
-        add(buttonPanel, BorderLayout.SOUTH);
+        buttonPanel.add(solveOptions);
+        buttonPanel.add(clearCitiesButton);
 
-        addCityButton.addActionListener(e -> {
+        //infoPanel.add(infoTestFrame);
+
+        add(buttonPanel, BorderLayout.SOUTH);
+        add(infoPanel, BorderLayout.EAST);
+
+        addRandomCityButton.addActionListener(e -> {
             cities.clear();
             Random rand = new Random();
             for (int i = 0; i < 10; i++) {
                 cities.add(new Node("City" + i, rand.nextInt(700), rand.nextInt(500)));
             }
+            System.out.println("-- 10 random cities were added to panel");
+            addCityButton.setEnabled(true);
+            clearCitiesButton.setEnabled(true);
             repaint();
         });
 
@@ -38,6 +60,25 @@ public class Ui extends JFrame {
                 repaint();
             }
         });
+
+        addCityButton.addActionListener(e -> {
+            //addCityButton.setEnabled(true);
+            //clearCitiesButton.setEnabled(true);
+            revalidate();
+            repaint();
+        });
+
+        clearCitiesButton.addActionListener(e -> {
+            if (!cities.isEmpty()) {
+                System.out.println("-- " + cities.size() + " cities were removed");
+                cities.clear();
+                addCityButton.setEnabled(false);
+                clearCitiesButton.setEnabled(false);
+                repaint();
+            }
+        });
+
+
     }
 
     @Override

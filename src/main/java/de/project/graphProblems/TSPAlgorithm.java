@@ -1,4 +1,4 @@
-package tsp;
+package de.project.graphProblems;
 
 import java.util.ArrayList;
 import java.util.List;

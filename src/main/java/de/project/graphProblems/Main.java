@@ -1,4 +1,4 @@
-package tsp;
+package de.project.graphProblems;
 
 public class Main {
     public static void main(String[] args){

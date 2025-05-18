@@ -4,18 +4,18 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class TSPAlgorithm {
-    public static List<City> solveNearestNeighbor(List<City> cities){
-        List<City> unvisited = new ArrayList<>(cities);
-        List<City> path = new ArrayList<>();
+    public static List<Node> solveNearestNeighbor(List<Node> cities){
+        List<Node> unvisited = new ArrayList<>(cities);
+        List<Node> path = new ArrayList<>();
 
-        City current = unvisited.remove(0);
+        Node current = unvisited.remove(0);
         path.add(current);
 
         while(!unvisited.isEmpty()){
-            City nearest = unvisited.get(0);
+            Node nearest = unvisited.get(0);
             double shortest = current.distanceTo(nearest);
 
-            for (City c : unvisited){
+            for (Node c : unvisited){
                 double dist = current.distanceTo(c);
 
                 if(dist < shortest){

@@ -5,6 +5,8 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
+import static de.project.graphProblems.NodeHandler.*;
+
 public class Ui extends JFrame {
     private List<Node> cities = new ArrayList<>();
     private List<Node> path = new ArrayList<>();
@@ -72,11 +74,7 @@ public class Ui extends JFrame {
             // Add new city to frame
             if (result == JOptionPane.OK_OPTION) {
                 int value = slider.getValue();
-                Random rand = new Random();
-                for (int i = 0; i < value; i++) {
-                    cities.add(new Node("City" + i, rand.nextInt(700), rand.nextInt(500)));
-                }
-                LoggerService.logMessage(LogType.INFO, value + " random cities were added to panel");
+                addRandomNodes(value, cities);
                 addCityButton.setEnabled(true);
                 clearCitiesButton.setEnabled(true);
                 repaint();
@@ -86,15 +84,19 @@ public class Ui extends JFrame {
         });
 
         solveButton.addActionListener(e -> {
-            if (!cities.isEmpty()) {
-                path = TSPAlgorithm.solveNearestNeighbor(cities);
-                repaint();
+            if (cities.isEmpty()) {
+                LoggerService.logMessage(LogType.WARN, "Cities are empty!");
+                return;
             }
+
+            path = startTspSolver(cities, (Algorithm) solveOptions.getSelectedItem());
+            repaint();
         });
 
         addCityButton.addActionListener(e -> {
-            //addCityButton.setEnabled(true);
-            //clearCitiesButton.setEnabled(true);
+            addRandomNode(cities);
+            addCityButton.setEnabled(true);
+            clearCitiesButton.setEnabled(true);
             revalidate();
             repaint();
         });

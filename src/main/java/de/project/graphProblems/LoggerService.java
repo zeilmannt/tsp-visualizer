@@ -1,6 +1,7 @@
 package de.project.graphProblems;
 
-import java.time.Instant;
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.logging.Logger;
 
 /**
@@ -25,39 +26,25 @@ public class LoggerService {
     private static final Logger logger = Logger.getLogger("Logger");
 
     public static void logMessage(LogType type, String msg) {
-        Instant timestamp = Instant.now();
-        String message = "[" + timestamp + "] " + msg;
+        LocalDateTime currentDateTime = LocalDateTime.now();
+        DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy HH:mm:ss");
+        String message = "[" + currentDateTime.format(formatter) + "] " + msg;
 
         switch (type) {
-            case SEVERE:
-                logger.severe(message);
-                break;
-            case WARNING:
-                logger.warning(message);
-                break;
             case INFO:
-                logger.info(message);
+                System.out.println("[INFO]" + message);
                 break;
-            case CONFIG:
-                logger.config(message);
+            case ERROR:
+                System.err.println("[ERROR]" + message);
                 break;
-            case FINE:
-                logger.fine(message);
+            case WARN:
+                System.out.println("\u001B[33m[WARN]" + message + "\u001B[0m");
                 break;
-            case FINER:
-                logger.finer(message);
-                break;
-            case FINEST:
-                logger.finest(message);
-                break;
-            case ALL:
-                logger.log(java.util.logging.Level.ALL, message);
-                break;
-            case OFF:
-                // OFF means no logging
+            case SUCCESS:
+                System.out.println("\u001B[32m[SUCCESS]" + message + "\u001B[0m");
                 break;
             default:
-                logger.warning("[UNRECOGNIZED LEVEL] " + message);
+                System.err.println("[SYSTEM ERROR] Wrong LogType was used! (" + type + ")" );
                 break;
         }
     }

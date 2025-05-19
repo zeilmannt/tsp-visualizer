@@ -1,15 +1,10 @@
 package de.project.graphProblems;
 
 public enum LogType {
-    SEVERE("Serious failure. Indicates a serious problem."),
-    WARNING("A potential problem or something unexpected."),
-    INFO("General runtime information."),
-    CONFIG("Configuration information."),
-    FINE("Detailed tracing information (low-level)."),
-    FINER("More detailed tracing than FINE."),
-    FINEST("Most detailed tracing."),
-    ALL("Enables logging of all messages."),
-    OFF("Disables logging entirely.");
+    ERROR("Severe issue appeared (text color is red)."),
+    WARN("A potential problem or something unexpected (text color is yellow)."),
+    INFO("General runtime information (text color is standard)."),
+    SUCCESS("Operation completed successfully (text color is green).");
 
     private final String description;
 

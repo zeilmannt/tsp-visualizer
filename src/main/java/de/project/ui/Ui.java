@@ -1,11 +1,15 @@
 package de.project.graphProblems;
 
+import de.project.Main;import de.project.model.Node;
+import de.project.service.LogType;
+import de.project.service.LoggerService;
+
 import javax.swing.*;
 import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import static de.project.graphProblems.NodeHandler.*;
+import static de.project.model.NodeHandler.*;
 
 public class Ui extends JFrame {
     private List<Node> cities = new ArrayList<>();
@@ -140,6 +144,6 @@ public class Ui extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Ui().setVisible(true));
+        SwingUtilities.invokeLater(() -> new Main.Ui().setVisible(true));
     }
 }

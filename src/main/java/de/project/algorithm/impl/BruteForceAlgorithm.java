@@ -11,7 +11,12 @@ public class BruteForceAlgorithm implements IGraphAlgorithm {
     public List<List<Node>> solve(List<Node> nodes) {
         List<List<Node>> steps = new ArrayList<>();
 
-        if (nodes == null || nodes.size() <= 1) {
+        if (nodes == null) {
+            steps.add(new ArrayList<>());
+            return steps;
+        }
+
+        if (nodes.size() <= 1) {
             steps.add(new ArrayList<>(nodes));
             return steps;
         }

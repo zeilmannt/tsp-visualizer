@@ -14,22 +14,27 @@ public class NodeHandler {
     public static void addRandomNodes(int numberOfNodes, List<Node> nodes){
         int currentNumberOfNodes = nodes.size();
 
-        if(currentNumberOfNodes >= MAX_NODES){
+        if (currentNumberOfNodes >= MAX_NODES) {
             LoggerService.logMessage(LogType.ERROR, "Max. number of nodes!");
             return;
         }
 
         Random rand = new Random();
-        int xPos, yPos;
+
+        int panelWidth = 780;
+        int panelHeight = 500;
+        int margin = 20;
+
         for (int i = currentNumberOfNodes; i < currentNumberOfNodes + numberOfNodes; i++) {
-            xPos = rand.nextInt(700);
-            yPos = rand.nextInt(500);
+            int xPos = rand.nextInt(panelWidth - margin * 2) + margin;
+            int yPos = rand.nextInt(panelHeight - margin * 2) + margin;
+
             nodes.add(new Node("Node" + i, xPos, yPos));
             LoggerService.logMessage(LogType.INFO, "Random node was added to panel (x=" + xPos + "|y=" + yPos + ")");
         }
     }
 
-    public static List<Node> computePath(List<Node> nodes, IGraphAlgorithm algorithm) {
+    public static List<List<Node>> computePath(List<Node> nodes, IGraphAlgorithm algorithm) {
         Objects.requireNonNull(nodes, "Node list cannot be null");
         Objects.requireNonNull(algorithm, "Algorithm cannot be null");
 

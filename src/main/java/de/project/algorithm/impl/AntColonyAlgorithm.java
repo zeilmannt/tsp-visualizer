@@ -8,7 +8,7 @@ import java.util.List;
 
 public class AntColonyAlgorithm implements IGraphAlgorithm {
     @Override
-    public List<Node> solve(List<Node> nodes){
+    public List<List<Node>> solve(List<Node> nodes){
         return new ArrayList<>();
     }
 

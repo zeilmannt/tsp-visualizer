@@ -8,21 +8,22 @@ import java.util.List;
 
 public class NearestNeighborAlgorithm implements IGraphAlgorithm {
     @Override
-    public List<Node> solve(List<Node> cities){
+    public List<List<Node>> solve(List<Node> cities){
         List<Node> unvisited = new ArrayList<>(cities);
         List<Node> path = new ArrayList<>();
+        List<List<Node>> steps = new ArrayList<>();
 
         Node current = unvisited.remove(0);
         path.add(current);
+        steps.add(new ArrayList<>(path));
 
-        while(!unvisited.isEmpty()){
+        while (!unvisited.isEmpty()) {
             Node nearest = unvisited.get(0);
             double shortest = current.distanceTo(nearest);
 
-            for (Node c : unvisited){
+            for (Node c : unvisited) {
                 double dist = current.distanceTo(c);
-
-                if(dist < shortest){
+                if (dist < shortest) {
                     shortest = dist;
                     nearest = c;
                 }
@@ -31,8 +32,10 @@ public class NearestNeighborAlgorithm implements IGraphAlgorithm {
             current = nearest;
             path.add(current);
             unvisited.remove(current);
+            steps.add(new ArrayList<>(path));
         }
-        return path;
+
+        return steps;
     }
 
     @Override

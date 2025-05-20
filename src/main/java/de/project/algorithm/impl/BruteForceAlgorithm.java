@@ -8,14 +8,19 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class BruteForceAlgorithm implements IGraphAlgorithm {
-    public List<Node> solve(List<Node> nodes) {
-        if(nodes == null || nodes.size() == 1) return nodes;
+    public List<List<Node>> solve(List<Node> nodes) {
+        List<List<Node>> steps = new ArrayList<>();
 
-        List<Node> path = new ArrayList<>();
-        double minDistance = Double.MAX_VALUE;
+        if (nodes == null || nodes.size() <= 1) {
+            steps.add(new ArrayList<>(nodes));
+            return steps;
+        }
 
         Node startNode = nodes.get(0);
         List<Node> restNodes = nodes.subList(1, nodes.size());
+
+        double minDistance = Double.MAX_VALUE;
+        List<Node> bestPath = new ArrayList<>();
 
         for (List<Node> perm : AlgorithmUtils.generatePermutations(restNodes)) {
             List<Node> tempPath = new ArrayList<>();
@@ -23,14 +28,18 @@ public class BruteForceAlgorithm implements IGraphAlgorithm {
             tempPath.addAll(perm);
             tempPath.add(startNode);
 
+            steps.add(new ArrayList<>(tempPath));
+
             double distance = AlgorithmUtils.calculateTotalDistance(tempPath);
             if (distance < minDistance) {
                 minDistance = distance;
-                path = tempPath;
+                bestPath = new ArrayList<>(tempPath);
             }
         }
 
-        return path;
+        steps.add(bestPath);
+
+        return steps;
     }
 
     @Override

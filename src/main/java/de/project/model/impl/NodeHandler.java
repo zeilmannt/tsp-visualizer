@@ -28,8 +28,7 @@ public class NodeHandler {
         for (int i = currentNumberOfNodes; i < currentNumberOfNodes + numberOfNodes; i++) {
             int xPos = rand.nextInt(panelWidth - margin * 2) + margin;
             int yPos = rand.nextInt(panelHeight - margin * 2) + margin;
-
-            nodes.add(new Node("Node" + i, xPos, yPos));
+            nodes.add(new Node(xPos, yPos, "Node" + i));
             LoggerService.logMessage(LogType.INFO, "Random node was added to panel (x=" + xPos + "|y=" + yPos + ")");
         }
     }

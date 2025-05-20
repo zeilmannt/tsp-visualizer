@@ -2,35 +2,20 @@ package de.project.model.impl;
 
 import de.project.model.interfaces.INode;
 
+import lombok.Getter;
+import lombok.RequiredArgsConstructor;
+
+@Getter
+@RequiredArgsConstructor
 public class Node implements INode {
-    private double x, y;
-    private String name;
-
-    public Node(String name, double x, double y){
-        this.name = name;
-        this.x = x;
-        this.y = y;
-    }
+    private final double x;
+    private final double y;
+    private final String name;
 
     @Override
-    public double distanceTo(Node city){
-        double dx = this.x - city.x;
-        double dy = this.y - city.y;
+    public double distanceTo(Node node){
+        double dx = this.x - node.x;
+        double dy = this.y - node.y;
         return Math.sqrt(dx * dx + dy * dy);
-    }
-
-    @Override
-    public String getName(){
-        return name;
-    }
-
-    @Override
-    public double getX(){
-        return x;
-    }
-
-    @Override
-    public double getY(){
-        return y;
     }
 }

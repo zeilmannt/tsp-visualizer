@@ -1,8 +1,16 @@
+/*
+ * This file is part of tsp-visualizer.
+ *
+ * Copyright (c) 2025 Tom Zeilmann
+ *
+ * Licensed under the MIT License. See LICENSE file in the project root for details.
+ */
+
 package de.project.algorithm.impl;
 
 import de.project.algorithm.interfaces.IGraphAlgorithm;
 import de.project.model.impl.Node;
-import de.project.algorithm.utils.AlgorithmUtils;
+import de.project.algorithm.utils.AlgorithmUtilis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,7 +35,7 @@ public class BruteForceAlgorithm implements IGraphAlgorithm {
         double minDistance = Double.MAX_VALUE;
         List<Node> bestPath = new ArrayList<>();
 
-        for (List<Node> perm : AlgorithmUtils.generatePermutations(restNodes)) {
+        for (List<Node> perm : AlgorithmUtilis.generatePermutations(restNodes)) {
             List<Node> tempPath = new ArrayList<>();
             tempPath.add(startNode);
             tempPath.addAll(perm);
@@ -35,7 +43,7 @@ public class BruteForceAlgorithm implements IGraphAlgorithm {
 
             steps.add(new ArrayList<>(tempPath));
 
-            double distance = AlgorithmUtils.calculateTotalDistance(tempPath);
+            double distance = AlgorithmUtilis.calculateTotalDistance(tempPath);
             if (distance < minDistance) {
                 minDistance = distance;
                 bestPath = new ArrayList<>(tempPath);

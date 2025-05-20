@@ -1,3 +1,11 @@
+/*
+ * This file is part of tsp-visualizer.
+ *
+ * Copyright (c) 2025 Tom Zeilmann
+ *
+ * Licensed under the MIT License. See LICENSE file in the project root for details.
+ */
+
 package de.project.ui;
 
 import de.project.algorithm.impl.Algorithm; // Assuming enum maps to actual impls
@@ -9,8 +17,6 @@ import de.project.service.LoggerService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.awt.event.MouseAdapter;
-import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.List;
 

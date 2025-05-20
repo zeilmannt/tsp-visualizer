@@ -1,3 +1,11 @@
+/*
+ * This file is part of tsp-visualizer.
+ *
+ * Copyright (c) 2025 Tom Zeilmann
+ *
+ * Licensed under the MIT License. See LICENSE file in the project root for details.
+ */
+
 package de.project.algorithm.utils;
 
 import de.project.model.impl.Node;
@@ -6,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class AlgorithmUtils {
-    private AlgorithmUtils(){}
+public final class AlgorithmUtilis {
+    private AlgorithmUtilis(){}
 
     public static List<List<Node>> generatePermutations(List<Node> nodes){
         List<List<Node>> result = new ArrayList<>();

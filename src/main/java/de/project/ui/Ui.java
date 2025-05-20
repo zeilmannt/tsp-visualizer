@@ -1,7 +1,7 @@
 package de.project.ui;
 
-import de.project.algorithm.Algorithm;
-import de.project.model.Node;
+import de.project.algorithm.impl.Algorithm;
+import de.project.model.impl.Node;
 import de.project.service.LogType;
 import de.project.service.LoggerService;
 
@@ -10,7 +10,7 @@ import java.awt.*;
 import java.util.*;
 import java.util.List;
 
-import static de.project.model.NodeHandler.*;
+import static de.project.model.impl.NodeHandler.*;
 
 public class Ui extends JFrame {
     private List<Node> cities = new ArrayList<>();

@@ -1,4 +1,4 @@
-package de.project.model;
+package de.project.model.impl;
 
 public class Node {
     private double x, y;

@@ -1,4 +1,4 @@
-package de.project.algorithm;
+package de.project.algorithm.impl;
 
 public enum Algorithm {
     NEAREST_NEIGHBOR("Nearest Neighbor", "---"),

@@ -1,9 +1,9 @@
-package de.project.model;
+package de.project.model.impl;
 
-import de.project.algorithm.Algorithm;
+import de.project.algorithm.impl.Algorithm;
 import de.project.service.LogType;
 import de.project.service.LoggerService;
-import de.project.algorithm.TSPAlgorithm;
+import de.project.algorithm.impl.TSPAlgorithm;
 
 import java.util.List;
 import java.util.Objects;

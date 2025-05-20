@@ -1,6 +1,6 @@
-package de.project.algorithm;
+package de.project.algorithm.impl;
 
-import de.project.model.Node;
+import de.project.model.impl.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;

@@ -1,9 +1,8 @@
 package de.project.model.impl;
 
-import de.project.algorithm.impl.Algorithm;
+import de.project.algorithm.interfaces.IGraphAlgorithm;
 import de.project.service.LogType;
 import de.project.service.LoggerService;
-import de.project.algorithm.impl.TSPAlgorithm;
 
 import java.util.List;
 import java.util.Objects;
@@ -30,16 +29,11 @@ public class NodeHandler {
         }
     }
 
-    public static List<Node> computePath(List<Node> nodes, Algorithm algorithm){
+    public static List<Node> computePath(List<Node> nodes, IGraphAlgorithm algorithm) {
         Objects.requireNonNull(nodes, "Node list cannot be null");
-        Objects.requireNonNull(algorithm, "Algorithm type cannot be null");
+        Objects.requireNonNull(algorithm, "Algorithm cannot be null");
 
-        LoggerService.logMessage(LogType.SUCCESS, "Path is being created using " + algorithm.getName());
-
-        return switch (algorithm) {
-            case ANT_COLONY       -> TSPAlgorithm.solveAntColony(nodes);
-            case NEAREST_NEIGHBOR -> TSPAlgorithm.solveNearestNeighbor(nodes);
-            case BRUTE_FORCE      -> TSPAlgorithm.solveBruteForce(nodes);
-        };
+        LoggerService.logMessage(LogType.SUCCESS, "Creating path using " + algorithm.getName());
+        return algorithm.solve(nodes);
     }
 }

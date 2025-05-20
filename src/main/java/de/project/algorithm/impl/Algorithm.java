@@ -1,18 +1,24 @@
 package de.project.algorithm.impl;
 
+import de.project.algorithm.interfaces.IGraphAlgorithm;
+
 public enum Algorithm {
-    NEAREST_NEIGHBOR("Nearest Neighbor", "---"),
-    ANT_COLONY("Ant Colony Optimization", "N/A"),
-    BRUTE_FORCE("Brute Force", "N/A");
+    NEAREST_NEIGHBOR(new NearestNeighborAlgorithm()),
+    ANT_COLONY(new AntColonyAlgorithm()),
+    BRUTE_FORCE(new BruteForceAlgorithm());
 
-    private final String name;
-    private final String description;
+    private final IGraphAlgorithm algorithm;
 
-    Algorithm(String name, String description){
-        this.name = name;
-        this.description = description;
+    Algorithm(IGraphAlgorithm algorithm) {
+        this.algorithm = algorithm;
     }
 
-    public String getName(){ return name; }
-    public String getDescription(){ return description; }
+    public IGraphAlgorithm getInstance() {
+        return algorithm;
+    }
+
+    @Override
+    public String toString() {
+        return algorithm.getName(); // For JComboBox display
+    }
 }

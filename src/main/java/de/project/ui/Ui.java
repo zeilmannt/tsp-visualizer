@@ -1,85 +1,64 @@
 package de.project.ui;
 
-import de.project.algorithm.impl.Algorithm;
+import de.project.algorithm.impl.Algorithm; // Assuming enum maps to actual impls
+import de.project.algorithm.interfaces.IGraphAlgorithm;
 import de.project.model.impl.Node;
 import de.project.service.LogType;
 import de.project.service.LoggerService;
 
 import javax.swing.*;
 import java.awt.*;
-import java.util.*;
+import java.util.ArrayList;
 import java.util.List;
 
 import static de.project.model.impl.NodeHandler.*;
 
 public class Ui extends JFrame {
-    private List<Node> cities = new ArrayList<>();
+    private final List<Node> cities = new ArrayList<>();
     private List<Node> path = new ArrayList<>();
 
+    // UI Components
+    private final JComboBox<Algorithm> solveOptions = new JComboBox<>(Algorithm.values());
+    private final JButton addRandomCityButton = new JButton("Add Random Cities");
+    private final JButton addCityButton = new JButton("Add City");
+    private final JButton solveButton = new JButton("Solve TSP");
+    private final JButton clearCitiesButton = new JButton("Clear Cities");
 
-    public Ui(){
+    public Ui() {
         setTitle("Traveling Salesman Problem");
         setSize(800, 600);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
         setLocationRelativeTo(null);
 
-        // All JavaSwing objects
+        setupLayout();
+        setupListeners();
+    }
+
+    private void setupLayout() {
         JPanel buttonPanel = new JPanel();
-        JPanel infoPanel = new JPanel();
-        JButton addRandomCityButton = new JButton("Add Random Cities");
-        JButton addCityButton = new JButton("Add City");
-        JButton solveButton = new JButton("Solve TSP");
-        JButton clearCitiesButton = new JButton("Clear cities");
-
-        Algorithm[] algorithms = {
-                Algorithm.NEAREST_NEIGHBOR,
-                Algorithm.ANT_COLONY,
-                Algorithm.BRUTE_FORCE
-        };
-
-        JComboBox solveOptions = new JComboBox(algorithms);
-
-        // Pop up slider for number of city inputs
-        JSlider slider = new JSlider(JSlider.HORIZONTAL, 1, 10, 5); // min=1, max=10, initial=5
-        slider.setMajorTickSpacing(1);
-        slider.setPaintTicks(true);
-        slider.setPaintLabels(true);
-        slider.setSnapToTicks(true);
-
-        JFrame infoTestFrame = new JFrame("Test");
-
-        // Set button to add one city and to clear all cities disabled
-        addCityButton.setEnabled(false);
-        clearCitiesButton.setEnabled(false);
-
-        // Add objects to buttons panel
         buttonPanel.add(addRandomCityButton);
         buttonPanel.add(addCityButton);
         buttonPanel.add(solveButton);
         buttonPanel.add(solveOptions);
         buttonPanel.add(clearCitiesButton);
 
-        //infoPanel.add(infoTestFrame);
-
         add(buttonPanel, BorderLayout.SOUTH);
-        add(infoPanel, BorderLayout.EAST);
+        clearCitiesButton.setEnabled(false);
+        addCityButton.setEnabled(false);
+    }
 
-        // Action listeners for buttons
+    private void setupListeners() {
         addRandomCityButton.addActionListener(e -> {
-            cities.clear();
+            JSlider slider = createSlider();
 
-            // Open pop up for number of random cities as input
             int result = JOptionPane.showConfirmDialog(
-                    null,
-                    slider,
-                    "Select number of cities",
-                    JOptionPane.OK_CANCEL_OPTION,
-                    JOptionPane.PLAIN_MESSAGE
+                    null, slider, "Select number of cities",
+                    JOptionPane.OK_CANCEL_OPTION, JOptionPane.PLAIN_MESSAGE
             );
 
-            // Add new city to frame
             if (result == JOptionPane.OK_OPTION) {
                 int value = slider.getValue();
+                cities.clear();
                 addRandomNodes(value, cities);
                 addCityButton.setEnabled(true);
                 clearCitiesButton.setEnabled(true);
@@ -95,15 +74,14 @@ public class Ui extends JFrame {
                 return;
             }
 
-            path = computePath(cities, (Algorithm) solveOptions.getSelectedItem());
+            Algorithm selected = (Algorithm) solveOptions.getSelectedItem();
+            IGraphAlgorithm algo = selected.getInstance(); // assumes getInstance returns impl
+            path = computePath(cities, algo);
             repaint();
         });
 
         addCityButton.addActionListener(e -> {
             addRandomNodes(1, cities);
-            addCityButton.setEnabled(true);
-            clearCitiesButton.setEnabled(true);
-            revalidate();
             repaint();
         });
 
@@ -116,8 +94,15 @@ public class Ui extends JFrame {
                 repaint();
             }
         });
+    }
 
-
+    private JSlider createSlider() {
+        JSlider slider = new JSlider(JSlider.HORIZONTAL, 1, 10, 5);
+        slider.setMajorTickSpacing(1);
+        slider.setPaintTicks(true);
+        slider.setPaintLabels(true);
+        slider.setSnapToTicks(true);
+        return slider;
     }
 
     @Override
@@ -137,7 +122,8 @@ public class Ui extends JFrame {
                 Node b = path.get(i + 1);
                 g2.drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
             }
-            // Connect last to first
+
+            // connect last to first to complete the tour
             Node first = path.get(0);
             Node last = path.get(path.size() - 1);
             g2.drawLine((int) last.getX(), (int) last.getY(), (int) first.getX(), (int) first.getY());

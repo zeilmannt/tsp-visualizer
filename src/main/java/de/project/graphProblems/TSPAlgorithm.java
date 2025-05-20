@@ -30,4 +30,12 @@ public class TSPAlgorithm {
         }
         return path;
     }
+
+    public static List<Node> solveAntColony(List<Node> nodes) {
+        return new ArrayList<>();
+    }
+
+    public static List<Node> solveBruteForce(List<Node> nodes) {
+        return new ArrayList<>();
+    }
 }

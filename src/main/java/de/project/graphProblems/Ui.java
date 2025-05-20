@@ -89,12 +89,12 @@ public class Ui extends JFrame {
                 return;
             }
 
-            path = startTspSolver(cities, (Algorithm) solveOptions.getSelectedItem());
+            path = computePath(cities, (Algorithm) solveOptions.getSelectedItem());
             repaint();
         });
 
         addCityButton.addActionListener(e -> {
-            addRandomNode(cities);
+            addRandomNodes(1, cities);
             addCityButton.setEnabled(true);
             clearCitiesButton.setEnabled(true);
             revalidate();

@@ -1,6 +1,7 @@
-package de.project.graphProblems;
+package de.project.ui;
 
-import de.project.Main;import de.project.model.Node;
+import de.project.algorithm.Algorithm;
+import de.project.model.Node;
 import de.project.service.LogType;
 import de.project.service.LoggerService;
 
@@ -144,6 +145,6 @@ public class Ui extends JFrame {
     }
 
     public static void main(String[] args) {
-        SwingUtilities.invokeLater(() -> new Main.Ui().setVisible(true));
+        SwingUtilities.invokeLater(() -> new Ui().setVisible(true));
     }
 }

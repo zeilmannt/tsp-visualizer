@@ -1,4 +1,6 @@
-package de.project.graphProblems;
+package de.project;
+
+import de.project.ui.Ui;
 
 public class Main {
     public static void main(String[] args){

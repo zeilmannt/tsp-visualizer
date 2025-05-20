@@ -1,6 +1,10 @@
-package de.project.graphProblems;
+package de.project.model;
 
-import java.util.ArrayList;
+import de.project.algorithm.Algorithm;
+import de.project.service.LogType;
+import de.project.service.LoggerService;
+import de.project.algorithm.TSPAlgorithm;
+
 import java.util.List;
 import java.util.Objects;
 import java.util.Random;

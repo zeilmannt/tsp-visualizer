@@ -1,4 +1,4 @@
-package de.project.graphProblems;
+package de.project.service;
 
 public enum LogType {
     ERROR("Severe issue appeared (text color is red)."),

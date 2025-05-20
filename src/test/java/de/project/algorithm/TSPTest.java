@@ -1,4 +1,4 @@
-package de.project.graphProblems;
+package de.project.algorithm;
 
 public class TSPTest {
 }

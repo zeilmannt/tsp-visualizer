@@ -1,4 +1,4 @@
-package de.project.graphProblems;
+package de.project.model;
 
 public class Node {
     private double x, y;

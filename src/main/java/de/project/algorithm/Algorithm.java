@@ -1,4 +1,4 @@
-package de.project.graphProblems;
+package de.project.algorithm;
 
 public enum Algorithm {
     NEAREST_NEIGHBOR("Nearest Neighbor", "---"),

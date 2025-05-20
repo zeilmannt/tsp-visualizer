@@ -1,4 +1,6 @@
-package de.project.graphProblems;
+package de.project.algorithm;
+
+import de.project.model.Node;
 
 import java.util.ArrayList;
 import java.util.Collections;

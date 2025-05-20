@@ -17,10 +17,12 @@ public class NodeHandler {
         }
 
         Random rand = new Random();
-        int xPos = rand.nextInt(700), yPos = rand.nextInt(500);
+        int xPos, yPos;
         for (int i = currentNumberOfNodes; i < currentNumberOfNodes + numberOfNodes; i++) {
+            xPos = rand.nextInt(700);
+            yPos = rand.nextInt(500);
             nodes.add(new Node("Node" + i, xPos, yPos));
-            LoggerService.logMessage(LogType.INFO, "Random node was added to panel (x=" + xPos + "|y=" + yPos);
+            LoggerService.logMessage(LogType.INFO, "Random node was added to panel (x=" + xPos + "|y=" + yPos + ")");
         }
     }
 

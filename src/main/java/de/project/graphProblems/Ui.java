@@ -28,7 +28,8 @@ public class Ui extends JFrame {
 
         Algorithm[] algorithms = {
                 Algorithm.NEAREST_NEIGHBOR,
-                Algorithm.ANT_COLONY
+                Algorithm.ANT_COLONY,
+                Algorithm.BRUTE_FORCE
         };
 
         JComboBox solveOptions = new JComboBox(algorithms);

@@ -12,3 +12,7 @@ Built with Java, Swing and Maven.
 - Interactive GUI
 - View shortest route connecting all cities
 - Easily extensible for other algorithms (e.g. A-Star, Dijkstra)
+
+## License
+
+This project is licensed under the MIT License - see the [LICENSE](LICENSE) file for details.

@@ -16,13 +16,20 @@ import static de.project.model.impl.NodeHandler.*;
 public class Ui extends JFrame {
     private final List<Node> cities = new ArrayList<>();
     private List<Node> path = new ArrayList<>();
+    private List<List<Node>> pathSteps = new ArrayList<>();
+    private int currentStep = 0;
+    private Timer animationTimer;
 
     // UI Components
+    private final JTabbedPane tabbedPane = new JTabbedPane();
     private final JComboBox<Algorithm> solveOptions = new JComboBox<>(Algorithm.values());
     private final JButton addRandomCityButton = new JButton("Add Random Cities");
     private final JButton addCityButton = new JButton("Add City");
     private final JButton solveButton = new JButton("Solve TSP");
     private final JButton clearCitiesButton = new JButton("Clear Cities");
+    private final JButton nextStepButton = new JButton("Next Step");
+    private final JButton prevStepButton = new JButton("Previous Step");
+    private final JButton playPauseButton = new JButton("Play");
 
     public Ui() {
         setTitle("Traveling Salesman Problem");
@@ -35,17 +42,35 @@ public class Ui extends JFrame {
     }
 
     private void setupLayout() {
-        JPanel buttonPanel = new JPanel();
-        buttonPanel.add(addRandomCityButton);
-        buttonPanel.add(addCityButton);
-        buttonPanel.add(solveButton);
-        buttonPanel.add(solveOptions);
-        buttonPanel.add(clearCitiesButton);
+        // Setup Tab Panel
+        JPanel setupPanel = new JPanel();
+        setupPanel.setLayout(new FlowLayout());
+        setupPanel.add(addRandomCityButton);
+        setupPanel.add(addCityButton);
+        setupPanel.add(clearCitiesButton);
 
-        add(buttonPanel, BorderLayout.SOUTH);
+        // Simulation Tab Panel
+        JPanel simulationPanel = new JPanel();
+        simulationPanel.setLayout(new FlowLayout());
+        simulationPanel.add(prevStepButton);
+        simulationPanel.add(nextStepButton);
+        simulationPanel.add(playPauseButton);
+        simulationPanel.add(solveButton);
+        simulationPanel.add(solveOptions);
+
+        // Add tabs
+        tabbedPane.addTab("Setup", setupPanel);
+        tabbedPane.addTab("Simulation", simulationPanel);
+
+        // Add to main frame
+        add(tabbedPane, BorderLayout.SOUTH);
+
+        // Button states
         clearCitiesButton.setEnabled(false);
         addCityButton.setEnabled(false);
+        toggleSimulationStatus(false);
     }
+
 
     private void setupListeners() {
         addRandomCityButton.addActionListener(e -> {
@@ -62,6 +87,7 @@ public class Ui extends JFrame {
                 addRandomNodes(value, cities);
                 addCityButton.setEnabled(true);
                 clearCitiesButton.setEnabled(true);
+                toggleSimulationStatus(true);
                 repaint();
             } else {
                 LoggerService.logMessage(LogType.INFO, "User cancelled adding cities");
@@ -75,8 +101,11 @@ public class Ui extends JFrame {
             }
 
             Algorithm selected = (Algorithm) solveOptions.getSelectedItem();
-            IGraphAlgorithm algo = selected.getInstance(); // assumes getInstance returns impl
-            path = computePath(cities, algo);
+            IGraphAlgorithm algo = selected.getInstance();
+            pathSteps = computePath(cities, algo);
+
+            currentStep = 0;
+            path = pathSteps.get(currentStep);
             repaint();
         });
 
@@ -91,9 +120,54 @@ public class Ui extends JFrame {
                 cities.clear();
                 addCityButton.setEnabled(false);
                 clearCitiesButton.setEnabled(false);
+                toggleSimulationStatus(false);
                 repaint();
             }
         });
+
+        nextStepButton.addActionListener(e -> {
+            if (pathSteps.isEmpty()) return;
+
+            if (currentStep < pathSteps.size() - 1) {
+                currentStep++;
+                path = pathSteps.get(currentStep);
+                repaint();
+            }
+        });
+
+        prevStepButton.addActionListener(e -> {
+            if (pathSteps.isEmpty()) return;
+
+            if (currentStep > 0) {
+                currentStep--;
+                path = pathSteps.get(currentStep);
+                repaint();
+            }
+        });
+
+        playPauseButton.addActionListener(e -> {
+            if (animationTimer == null) {
+                animationTimer = new Timer(1000, ev -> {
+                    if (currentStep < pathSteps.size() - 1) {
+                        currentStep++;
+                        path = pathSteps.get(currentStep);
+                        repaint();
+                    } else {
+                        animationTimer.stop();
+                        playPauseButton.setText("Play");
+                    }
+                });
+            }
+
+            if (animationTimer.isRunning()) {
+                animationTimer.stop();
+                playPauseButton.setText("Play");
+            } else {
+                animationTimer.start();
+                playPauseButton.setText("Pause");
+            }
+        });
+
     }
 
     private JSlider createSlider() {
@@ -110,9 +184,25 @@ public class Ui extends JFrame {
         super.paint(g);
         Graphics2D g2 = (Graphics2D) g;
 
+        int nodeSize = 10;
+        int labelYOffset = 12;
+
         for (Node city : cities) {
-            g2.fillOval((int) city.getX(), (int) city.getY(), 10, 10);
-            g2.drawString(city.getName(), (int) city.getX(), (int) city.getY() - 5);
+            int x = (int) city.getX();
+            int y = (int) city.getY();
+
+            // Draw the node
+            g2.fillOval(x, y, nodeSize, nodeSize);
+
+            // Compute label position
+            int labelY = y - labelYOffset;
+
+            // If a label is above the frame, move it below the node
+            if (labelY < 10) {
+                labelY = y + nodeSize + labelYOffset;
+            }
+
+            g2.drawString(city.getName(), x, labelY);
         }
 
         if (path.size() > 1) {
@@ -123,11 +213,23 @@ public class Ui extends JFrame {
                 g2.drawLine((int) a.getX(), (int) a.getY(), (int) b.getX(), (int) b.getY());
             }
 
-            // connect last to first to complete the tour
+            // Connect last node to first to complete the tour
             Node first = path.get(0);
             Node last = path.get(path.size() - 1);
             g2.drawLine((int) last.getX(), (int) last.getY(), (int) first.getX(), (int) first.getY());
         }
+    }
+
+    private void toggleSimulationStatus(boolean newStatus){
+        if(newStatus){
+            tabbedPane.setEnabledAt(1, true);
+            tabbedPane.setSelectedIndex(1);
+        }
+        else{
+            tabbedPane.setEnabledAt(1, false);
+        }
+
+
     }
 
     public static void main(String[] args) {

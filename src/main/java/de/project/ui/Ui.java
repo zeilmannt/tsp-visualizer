@@ -8,7 +8,7 @@
 
 package de.project.ui;
 
-import de.project.algorithm.impl.Algorithm; // Assuming enum maps to actual impls
+import de.project.algorithm.impl.Algorithm;
 import de.project.algorithm.interfaces.IGraphAlgorithm;
 import de.project.model.impl.Edge;
 import de.project.model.impl.Node;
@@ -102,7 +102,6 @@ public class Ui extends JFrame {
 
             if (result == JOptionPane.OK_OPTION) {
                 int value = slider.getValue();
-                //cities.clear();
                 addRandomNodes(value, cities);
                 updateClearButtonState();
                 addCityButton.setEnabled(true);
@@ -128,7 +127,6 @@ public class Ui extends JFrame {
 
             IGraphAlgorithm algo = selected.getInstance();
             pathSteps = computePath(cities, algo);
-
             currentStep = 0;
             path = pathSteps.get(currentStep);
             graphPanel.setPath(path);
@@ -225,13 +223,13 @@ public class Ui extends JFrame {
             prevStepButton.setEnabled(false);
             playPauseButton.setEnabled(false);
             solveOptions.setEnabled(false);
-            tabbedPane.setEnabledAt(1, false);  // disable Simulation tab
-            tabbedPane.setEnabledAt(0, true);   // keep Setup tab enabled to access addCityButton
+            tabbedPane.setEnabledAt(1, false);
+            tabbedPane.setEnabledAt(0, true);
 
             // Keep addCityButton enabled so user can toggle off manual mode
             addCityButton.setEnabled(true);
 
-            // Optionally, change addCityButton text to indicate "Stop Adding"
+            // Change addCityButton text to indicate "Stop Adding"
             addCityButton.setText("Stop Adding");
         } else {
             // Re-enable all buttons and simulation tab
@@ -247,13 +245,6 @@ public class Ui extends JFrame {
             // Reset addCityButton text
             addCityButton.setText("Add City");
         }
-    }
-
-
-    private void toggleButtonStatusForManually(boolean b) {
-        tabbedPane.setEnabled(b);
-        addRandomCityButton.setEnabled(b);
-        clearCitiesButton.setEnabled(b);
     }
 
     private JSlider createSlider() {

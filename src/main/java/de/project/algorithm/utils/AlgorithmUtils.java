@@ -14,8 +14,8 @@ import java.util.ArrayList;
 import java.util.Collections;
 import java.util.List;
 
-public final class AlgorithmUtilis {
-    private AlgorithmUtilis(){}
+public final class AlgorithmUtils {
+    private AlgorithmUtils(){}
 
     public static List<List<Node>> generatePermutations(List<Node> nodes){
         List<List<Node>> result = new ArrayList<>();

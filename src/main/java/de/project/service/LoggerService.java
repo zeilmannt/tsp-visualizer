@@ -18,21 +18,14 @@ import java.util.logging.Logger;
  * <p>
  * Supported log levels:
  * <ul>
- *   <li><b>SEVERE</b> – Indicates a serious failure.</li>
- *   <li><b>WARNING</b> – Indicates a potential problem or unexpected situation.</li>
+ *   <li><b>ERROR</b> – Indicates a serious failure.</li>
+ *   <li><b>WARN</b> – Indicates a potential problem or unexpected situation.</li>
  *   <li><b>INFO</b> – Provides general runtime information.</li>
- *   <li><b>CONFIG</b> – Used for configuration-related messages.</li>
- *   <li><b>FINE</b> – Provides detailed tracing information.</li>
- *   <li><b>FINER</b> – More detailed tracing than FINE.</li>
- *   <li><b>FINEST</b> – The most detailed tracing level available.</li>
- *   <li><b>ALL</b> – Enables logging of all messages.</li>
- *   <li><b>OFF</b> – Disables logging entirely.</li>
+ *   <li><b>SUCCESS</b> – Operation completed successfully.</li>
  * </ul>
  */
 
 public class LoggerService {
-    private static final Logger logger = Logger.getLogger("Logger");
-
     public static void logMessage(LogType type, String msg) {
         LocalDateTime currentDateTime = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd:MM:yyyy HH:mm:ss");

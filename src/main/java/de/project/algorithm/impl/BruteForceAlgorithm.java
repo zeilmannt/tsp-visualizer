@@ -10,7 +10,7 @@ package de.project.algorithm.impl;
 
 import de.project.algorithm.interfaces.IGraphAlgorithm;
 import de.project.model.impl.Node;
-import de.project.algorithm.utils.AlgorithmUtilis;
+import de.project.algorithm.utils.AlgorithmUtils;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -35,7 +35,7 @@ public class BruteForceAlgorithm implements IGraphAlgorithm {
         double minDistance = Double.MAX_VALUE;
         List<Node> bestPath = new ArrayList<>();
 
-        for (List<Node> perm : AlgorithmUtilis.generatePermutations(restNodes)) {
+        for (List<Node> perm : AlgorithmUtils.generatePermutations(restNodes)) {
             List<Node> tempPath = new ArrayList<>();
             tempPath.add(startNode);
             tempPath.addAll(perm);
@@ -43,7 +43,7 @@ public class BruteForceAlgorithm implements IGraphAlgorithm {
 
             steps.add(new ArrayList<>(tempPath));
 
-            double distance = AlgorithmUtilis.calculateTotalDistance(tempPath);
+            double distance = AlgorithmUtils.calculateTotalDistance(tempPath);
             if (distance < minDistance) {
                 minDistance = distance;
                 bestPath = new ArrayList<>(tempPath);

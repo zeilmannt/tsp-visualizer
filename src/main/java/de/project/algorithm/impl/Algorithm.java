@@ -27,6 +27,6 @@ public enum Algorithm {
 
     @Override
     public String toString() {
-        return algorithm.getName(); // For JComboBox display
+        return algorithm.getName();
     }
 }

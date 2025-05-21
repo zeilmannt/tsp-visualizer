@@ -22,8 +22,8 @@ public class NodeHandler {
     public static void addRandomNodes(int numberOfNodes, List<Node> nodes){
         int currentNumberOfNodes = nodes.size();
 
-        if (currentNumberOfNodes >= MAX_NODES) {
-            LoggerService.logMessage(LogType.ERROR, "Max. number of nodes!");
+        if (currentNumberOfNodes == MAX_NODES) {
+            LoggerService.logMessage(LogType.WARN, "Max. number of nodes reached!");
             return;
         }
 

@@ -17,6 +17,8 @@ import java.util.List;
 public class NearestNeighborAlgorithm implements IGraphAlgorithm {
     @Override
     public List<List<Node>> solve(List<Node> cities){
+        if(cities.isEmpty()) return List.of();
+
         List<Node> unvisited = new ArrayList<>(cities);
         List<Node> path = new ArrayList<>();
         List<List<Node>> steps = new ArrayList<>();

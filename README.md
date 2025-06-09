@@ -4,13 +4,16 @@ A Java-based application to solve and visualize the **Traveling Salesman Problem
 Built with Java, Swing and Maven.
 
 ## Preview
- -- TODO --
+![preview](images/ui-snapshot.png)
+
 
 ## Feature
 - Generate random cities
-- Visualize TSP solution using Nearest Neighbor algorithm
+- Visualize TSP solution using Nearest Neighbor, Brute Force or Ant Colony algorithm
 - Interactive GUI
 - View shortest route connecting all cities
+- View performance parameter after execution of algorithm
+- Step-by-step analysis
 - Easily extensible for other algorithms (e.g. A-Star, Dijkstra)
 
 ## License

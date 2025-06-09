@@ -141,13 +141,23 @@ public class Ui extends JFrame {
                 return;
             }
 
+            long startTime = System.currentTimeMillis();
+
             IGraphAlgorithm algo = selected.getInstance();
             pathSteps = computePath(cities, algo);
             currentStep = 0;
             path = pathSteps.get(currentStep);
             graphPanel.setPath(path);
-            toggleTabStatus(true, 2);
             graphPanel.repaint();
+
+            // Update performance tab
+            toggleTabStatus(true, 2);
+            double totalDistance = calculatePathLength(path);
+            long endTime = System.currentTimeMillis();
+            double elapsedSeconds = (endTime - startTime) / 1000.0;
+            totalDistanceLabel.setText(String.format("Total Distance: %.2f", totalDistance));
+            timeLabel.setText(String.format("Elapsed Time: %.2f s", elapsedSeconds));
+            iterationsLabel.setText("Iterations: " + /* get iteration count from algorithm if available, else "-" */ "-");
         });
 
         addCityButton.addActionListener(e -> {
@@ -285,6 +295,17 @@ public class Ui extends JFrame {
             LoggerService.logMessage(LogType.INFO, tabbedPane.getTitleAt(tabNumber) + " tab was deactivated");
         }
     }
+
+    private double calculatePathLength(List<Node> path) {
+        if (path == null || path.isEmpty()) return 0;
+        double totalDist = 0;
+        for (int i = 0; i < path.size() - 1; i++) {
+            totalDist += path.get(i).distanceTo(path.get(i + 1));
+        }
+        totalDist += path.get(path.size() - 1).distanceTo(path.get(0));
+        return totalDist;
+    }
+
 
     private void updateClearButtonState() {
         clearCitiesButton.setEnabled(!cities.isEmpty());

@@ -34,15 +34,23 @@ public class Ui extends JFrame {
     private GraphPanel graphPanel;
 
     // UI Components
+    // Setup Tab
     private final JTabbedPane tabbedPane = new JTabbedPane();
-    private final JComboBox<Algorithm> solveOptions = new JComboBox<>(Algorithm.values());
     private final JButton addRandomCityButton = new JButton("Add Random Cities");
     private final JButton addCityButton = new JButton("Add City");
-    private final JButton solveButton = new JButton("Solve TSP");
     private final JButton clearCitiesButton = new JButton("Clear Cities");
+
+    // Simulation tab
+    private final JComboBox<Algorithm> solveOptions = new JComboBox<>(Algorithm.values());
+    private final JButton solveButton = new JButton("Solve TSP");
     private final JButton nextStepButton = new JButton("Next Step");
     private final JButton prevStepButton = new JButton("Previous Step");
     private final JButton playPauseButton = new JButton("Play");
+
+    // Performance tab
+    private JLabel totalDistanceLabel = new JLabel("Total Distance: ");
+    private JLabel iterationsLabel = new JLabel("Iterations: ");
+    private JLabel timeLabel = new JLabel("Elapsed Time: ");
 
     public Ui() {
         setTitle("Traveling Salesman Problem");
@@ -74,6 +82,12 @@ public class Ui extends JFrame {
         simulationPanel.add(solveButton);
         simulationPanel.add(solveOptions);
 
+        // Performance Tab Panel
+        JPanel performancePanel = new JPanel();
+        performancePanel.add(totalDistanceLabel);
+        performancePanel.add(iterationsLabel);
+        performancePanel.add(timeLabel);
+
         // Setup for combo box
         solveOptions.setToolTipText("Choose a TSP Algorithm");
         solveOptions.setSelectedIndex(0);
@@ -81,13 +95,15 @@ public class Ui extends JFrame {
         // Add tabs
         tabbedPane.addTab("Setup", setupPanel);
         tabbedPane.addTab("Simulation", simulationPanel);
+        tabbedPane.addTab("Performance", performancePanel);
 
         // Add to the main frame
         add(tabbedPane, BorderLayout.SOUTH);
 
         // Button states
         clearCitiesButton.setEnabled(false);
-        toggleSimulationStatus(false);
+        toggleTabStatus(false, 1);
+        toggleTabStatus(false, 2);
     }
 
 
@@ -105,7 +121,7 @@ public class Ui extends JFrame {
                 addRandomNodes(value, cities);
                 updateClearButtonState();
                 addCityButton.setEnabled(true);
-                toggleSimulationStatus(true);
+                toggleTabStatus(true, 1);
                 repaint();
             } else {
                 LoggerService.logMessage(LogType.INFO, "User cancelled adding cities");
@@ -130,6 +146,7 @@ public class Ui extends JFrame {
             currentStep = 0;
             path = pathSteps.get(currentStep);
             graphPanel.setPath(path);
+            toggleTabStatus(true, 2);
             graphPanel.repaint();
         });
 
@@ -143,7 +160,8 @@ public class Ui extends JFrame {
                 cities.clear();
                 addCityButton.setEnabled(true);
                 updateClearButtonState();
-                toggleSimulationStatus(false);
+                toggleTabStatus(false, 1);
+                toggleTabStatus(false, 2);
                 graphPanel.repaint();
             }
         });
@@ -185,7 +203,7 @@ public class Ui extends JFrame {
                 });
             }
 
-            if (animationTimer == null || !animationTimer.isRunning()) {
+            if (!animationTimer.isRunning()) {
                 startAnimation();
                 playPauseButton.setText("Pause");
             } else {
@@ -240,7 +258,7 @@ public class Ui extends JFrame {
             prevStepButton.setEnabled(true);
             playPauseButton.setEnabled(true);
             solveOptions.setEnabled(true);
-            tabbedPane.setEnabledAt(1, true);  // enable Simulation tab
+            tabbedPane.setEnabledAt(1, true);
 
             // Reset addCityButton text
             addCityButton.setText("Add City");
@@ -256,13 +274,15 @@ public class Ui extends JFrame {
         return slider;
     }
 
-    private void toggleSimulationStatus(boolean newStatus){
+    private void toggleTabStatus(boolean newStatus, int tabNumber){
         if(newStatus){
-            tabbedPane.setEnabledAt(1, true);
-            tabbedPane.setSelectedIndex(1);
+            tabbedPane.setEnabledAt(tabNumber, true);
+            tabbedPane.setSelectedIndex(tabNumber);
+            LoggerService.logMessage(LogType.INFO, tabbedPane.getTitleAt(tabNumber) + " tab was activate");
         }
         else{
-            tabbedPane.setEnabledAt(1, false);
+            tabbedPane.setEnabledAt(tabNumber, false);
+            LoggerService.logMessage(LogType.INFO, tabbedPane.getTitleAt(tabNumber) + " tab was deactivated");
         }
     }
 
